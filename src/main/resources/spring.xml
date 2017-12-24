@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/aop 
+    http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+    http://www.springframework.org/schema/tx 
+    http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+
+	<context:component-scan base-package="com.lxit.oa" />
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<!-- 配置数据库连接信息 -->
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl" value="jdbc:mysql://192.168.16.139:3306/oa" />
+		<property name="user" value="root" />
+		<property name="password" value="root" />
+		<!-- 队列中的最小连接数 -->
+		<property name="minPoolSize" value="15"></property>
+		<!-- 队列中的最大连接数 -->
+		<property name="maxPoolSize" value="25"></property>
+		<!-- 当连接耗尽时创建的连接数 -->
+		<property name="acquireIncrement" value="15"></property>
+		<!-- 等待时间 -->
+		<property name="checkoutTimeout" value="10000"></property>
+		<!-- 初始化连接数 -->
+		<property name="initialPoolSize" value="20"></property>
+		<!-- 最大空闲时间，超出时间连接将被丢弃 -->
+		<property name="maxIdleTime" value="20"></property>
+		<!-- 每隔60秒检测空闲连接 -->
+		<property name="idleConnectionTestPeriod" value="60000"></property>
+
+	</bean>
+
+	<!-- session工厂由spring来管理 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="mapperLocations" value="classpath:com/lxit/oa/dao/mapper/*.xml" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 配置事务 -->
+	<!-- <bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	AOP切面拦截事务
+	<aop:config>
+		切入点定义
+		<aop:pointcut id="serviceMethod"
+			expression="execution(* com.lxit.oa.service.impl.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethod" />
+	</aop:config>
+
+	事务的通知方式，指定事务的属性
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice> -->
+	
+	
+</beans>

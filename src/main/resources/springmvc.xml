@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-3.2.xsd
+	http://www.springframework.org/schema/mvc 
+	http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+    <!-- 扫描Controller和service注解类 -->
+	<context:component-scan base-package="com.lxit.oa" />
+	    
+	<!--可以直接相应的转发页面，而无需再经过控制器-->      
+ 
+	<mvc:view-controller path="/pactExamine" view-name="pactExamine" />
+
+	<mvc:view-controller path="/main" view-name="mian" />
+	<mvc:view-controller path="/welcome" view-name="welcome" />
+	<mvc:view-controller path="/systemResume" view-name="systemResume" />
+
+	
+	<!-- <mvc:view-controller path="/main" view-name="mian" /> -->
+
+	<!-- 开启注解 -->
+	<mvc:annotation-driven />
+	
+	<!-- 配置视图解析器 将视图返回字符串解析到：/WEB-INF/pages/返回值.jsp 下-->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- 视图前缀 -->
+		<property name="prefix" value="/WEB-INF/pages/" />
+		<!-- 视图后置 -->
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+	<!-- 解决js文件无法引入的问题 或者在web.xml中配置servlet-mapping -->
+	<mvc:default-servlet-handler/>
+	<mvc:annotation-driven />
+	
+	<!-- 配置文件上传组件 -->
+	<bean id="multipartResolver" 
+	    class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	<!-- 指定默认的编码格式 -->
+	<property name="defaultEncoding" value="UTF-8" />
+	<!-- 指定允许上传的文件大小，单位Byte-->
+	<property name="maxUploadSize" value="5120000" />
+	</bean>
+	
+	
+</beans>
